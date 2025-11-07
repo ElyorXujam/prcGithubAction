@@ -1,18 +1,40 @@
-name: Deploy to GitHub Pages
+name: HTML Sayt CI/CD + Deploy
 
-on: 
+on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions: 
-      contents: read
-      pages: write
-      id-token: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+      - name: Kodni yuklab olish
+        uses: actions/checkout@v4
+
+      - name: HTML tekshirish (ixtiyoriy)
+        run: |
+          echo "HTML fayllar soni: $(ls *.html | wc -l)"
+          ls -la
+
+      # Artifact (sayt fayllarini) tayyorlash
+      - name: Artifact yuklash
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./   # index.html shu yerda
+
+  deploy:
+    needs: build   # build tugagandan keyin ishlaydi
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # Yozish ruxsati
+      id-token: write   # Yangi autentifikatsiya
+      
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: GitHub Pages ga deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
