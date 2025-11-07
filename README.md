@@ -34,5 +34,5 @@ This project is a minimal example of setting up Continuous Integration and Conti
 You can customize the website by editing `index.html`. The changes will be automatically deployed when you push to the `main` branch.
 
 
-This project is part of roadmap.sh DevOps projects.
+This project is part of [roadmap.sh](https://roadmap.sh/projects/github-actions-deployment-workflow) DevOps projects.
 
